@@ -1,0 +1,1 @@
+# CSM Core package initialization

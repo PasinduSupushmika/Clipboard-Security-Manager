@@ -1,0 +1,28 @@
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller builds and specs
+build/
+dist/
+*.spec
+
+# Application Local Database
+.csm/
+*.sqlite3
+*.sqlite3-journal
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env
+
+# Editor configuration
+.vscode/
+.idea/
+*.swp
+
+# macOS specific
+.DS_Store
