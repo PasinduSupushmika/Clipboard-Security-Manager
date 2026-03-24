@@ -114,11 +114,12 @@ class SetupWizard(ctk.CTk):
         )
         self.btn_verify.grid(row=4, column=0, pady=30)
         
-        btn_back = ctk.CTkButton(self.otp_frame, text="< Back", width=100, fg_color="transparent", border_width=1, command=lambda: 
-        btn_theme = ctk.CTkButton(self.main_container, text="Theme", width=60, command=self._toggle_theme, fg_color="transparent", border_width=1, border_color=("#171925", "#d83b3c"))
-        btn_theme.place(relx=0.05, rely=0.05)
-        self.setup_frame.tkraise())
+        btn_back = ctk.CTkButton(self.otp_frame, text="< Back", width=100, fg_color="transparent", border_width=1, command=lambda: self.setup_frame.tkraise())
         btn_back.grid(row=5, column=0)
+
+    def _toggle_theme(self):
+        current = ctk.get_appearance_mode()
+        ctk.set_appearance_mode("Light" if current == "Dark" else "Dark")
 
     def _attempt_initialization(self):
         e = self.email_entry.get()
@@ -165,6 +166,4 @@ def run_wizard():
     app = SetupWizard()
     app.mainloop()
 
-    def _toggle_theme(self):
-        current = ctk.get_appearance_mode()
-        ctk.set_appearance_mode("Light" if current == "Dark" else "Dark")
+
