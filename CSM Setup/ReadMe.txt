@@ -1,11 +1,9 @@
 ===========================================================
  CLIPBOARD SECURITY MANAGER  (CSM)
 ===========================================================
-Developed by: iMazK.inc
-Contact Number: +94 70 251 8774
-Support Email: support@imazk-inc-dummy-domain.com
-Website: www.imazk-inc-dummy-domain.com
-Headquarters: 404 Cyber Lane, Tech City, DummyState 101010
+Developed by: iMazK pvt ltd
+Contact Number: +94 702518774
+Support Email: pasindusupushmika17@gmail.com
 ===========================================================
 
 INTRODUCTION:
@@ -43,5 +41,5 @@ HOW TO USE IT:
 NOTE: To manage passwords or view logs, just double-click the green padlock icon currently located silently in your Windows Bottom-Right Taskbar.
 
 ===========================================================
-Thank you for securing your workspaces with iMazK.inc!
+Thank you for securing your workspaces with iMazK pvt ltd!
 ===========================================================

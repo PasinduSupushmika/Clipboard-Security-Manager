@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Release](https://img.shields.io/badge/Release-v1.0.0-green.svg)](https://github.com/PasinduSupushmika/Clipboard-Security-Manager)
 
-**Developed by iMazK.inc**  
+**Developed by iMazK pvt ltd**  
 *Enterprise-Grade Clipboard Encryption Utility preventing unauthorized memory leakage of sensitive passwords, intellectual properties, and communication.*
 
 In modern environments, applications often scrape the OS clipboard in the background natively. CSM operates as an interactive daemon hooking into `<ctrl>+C`/`<ctrl>+V` pipelines to dynamically execute AES-256-GCM encryption on the data itself holding the plaintext in isolated python memory rather than upon the OS memory.
@@ -51,6 +51,6 @@ python main.py
 ## 📧 Support
 For production queries, deployments, or custom corporate builds please consult the associated `ReadMe.txt` outputted inside the final distributions!
 
-**iMazK.inc Headquarters**
-> Contact: +94 70 251 8774
-> Web: www.imazk-inc-dummy-domain.com
+**iMazK pvt ltd**
+> Contact: +94 702518774
+> Support: pasindusupushmika17@gmail.com

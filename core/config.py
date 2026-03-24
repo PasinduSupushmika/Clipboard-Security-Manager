@@ -35,14 +35,14 @@ CSM_SMTP_HOST = "smtp.gmail.com"
 CSM_SMTP_PORT = 587
 
 # REPLACE_ME: Replace with your actual Gmail address (e.g., your.name@gmail.com)
-CSM_SMTP_USER_EMAIL = "DUMMY_SENDER_EMAIL@gmail.com"
+CSM_SMTP_USER_EMAIL = "pasindusupushmika17@gmail.com"
 
 # REPLACE_ME: Replace with your Gmail App Password
 # NOTE: This is NOT your standard Gmail login password!
-CSM_SMTP_APP_PASSWORD = "DUMMY_GMAIL_APP_PASSWORD"
+CSM_SMTP_APP_PASSWORD = "ABCD EFGH IJKL MNOP".replace(" ", "")
 
 # REPLACE_ME: Who should receive the security alerts? (Can be the same as sender)
-CSM_ALERT_RECEIVER_EMAIL = "DUMMY_RECEIVER_EMAIL@gmail.com"
+CSM_ALERT_RECEIVER_EMAIL = "pasindusupushmika17@gmail.com"
 
 # ==============================================================================
 

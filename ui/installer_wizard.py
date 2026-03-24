@@ -16,7 +16,7 @@ class ProfessionalInstaller(ctk.CTk):
         self.install_dir = Path(os.environ.get("LOCALAPPDATA")) / "iMazK_CSM"
         
         # Configure matching Setup Dimensions giving enough room for Next buttons
-        self.title("iMazK.inc - CSM Setup")
+        self.title("iMazK pvt ltd - CSM Setup")
         self.geometry("600x450")
         self.resizable(False, False)
         
