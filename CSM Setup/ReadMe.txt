@@ -2,7 +2,7 @@
  CLIPBOARD SECURITY MANAGER  (CSM)
 ===========================================================
 Developed by: iMazK pvt ltd
-Contact Number: +94 702518774
+Contact Number: +94 70 2619775
 Support Email: pasindusupushmika17@gmail.com
 ===========================================================
 

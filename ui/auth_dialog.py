@@ -24,7 +24,7 @@ class AuthDialog(ctk.CTkToplevel):
 
         self.header = ctk.CTkLabel(
             self, text="Secure Clipboard Access", 
-            font=("Consolas", 20, "bold"), text_color="#00FFFF"
+            font=("Consolas", 20, "bold"), text_color=("#171925", "#d83b3c")
         )
         self.header.grid(row=0, column=0, pady=(20, 10))
 
@@ -36,14 +36,14 @@ class AuthDialog(ctk.CTkToplevel):
 
         self.password_entry = ctk.CTkEntry(
             self, placeholder_text="Enter Master Password...",
-            show="*", width=250, border_color="#00FFFF", fg_color="transparent"
+            show="*", width=250, border_color=("#171925", "#d83b3c"), fg_color="transparent"
         )
         self.password_entry.grid(row=2, column=0, pady=10)
         self.password_entry.bind('<Return>', lambda event: self._verify())
 
         self.btn_submit = ctk.CTkButton(
             self, text="DECRYPT", width=150, fg_color="transparent", 
-            border_width=2, hover_color="#005555", text_color="#00FFFF",
+            border_width=2, hover_color=("#D0E4FF", "#171925"), text_color=("#171925", "#d83b3c"),
             command=self._verify
         )
         self.btn_submit.grid(row=3, column=0, pady=20)
@@ -59,7 +59,7 @@ class AuthDialog(ctk.CTkToplevel):
         
         # Check standard Lockout Protocol First
         if escalation.is_locked():
-            self.info_text.configure(text="SYSTEM LOCKEDOUT. Check your Email.", text_color="#FF0000")
+            self.info_text.configure(text="SYSTEM LOCKEDOUT. Check your Email.", text_color=("#d83b3c", "#d83b3c"))
             return
             
         validated = auth.verify_master_password(pwd)
@@ -70,9 +70,9 @@ class AuthDialog(ctk.CTkToplevel):
             self.destroy()
         elif result["action"] == "DENY":
             self.password_entry.delete(0, 'end')
-            self.info_text.configure(text=result["message"], text_color="#FF5555")
+            self.info_text.configure(text=result["message"], text_color=("#d83b3c", "#d83b3c"))
         elif result["action"] == "LOCKOUT":
-            self.info_text.configure(text=result["message"], text_color="#FF0000")
+            self.info_text.configure(text=result["message"], text_color=("#d83b3c", "#d83b3c"))
             self.password_entry.configure(state="disabled")
             self.btn_submit.configure(state="disabled")
 

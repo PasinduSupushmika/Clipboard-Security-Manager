@@ -193,10 +193,10 @@ class WelcomePage(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)
         self.grid_columnconfigure(0, weight=1)
         
-        title = ctk.CTkLabel(self, text="Welcome to the Clipboard Security\nManager Setup Wizard", font=("Consolas", 20, "bold"), text_color="#00FFFF")
+        title = ctk.CTkLabel(self, text="Welcome to the Clipboard Security\nManager Setup Wizard", font=("Consolas", 20, "bold"), text_color=("#171925", "#d83b3c"))
         title.grid(row=0, column=0, pady=(40, 20))
         
-        desc = ctk.CTkLabel(self, text="This wizard will guide you through the installation of CSM.\n\nIt is recommended that you close all other native cryptography\napplications before starting Setup.", font=("Consolas", 14), text_color="#DDDDDD", justify="left")
+        desc = ctk.CTkLabel(self, text="This wizard will guide you through the installation of CSM.\n\nIt is recommended that you close all other native cryptography\napplications before starting Setup.", font=("Consolas", 14), text_color=("#333333", "#c8cad6"), justify="left")
         desc.grid(row=1, column=0, pady=(0, 40))
         
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -222,7 +222,7 @@ class OptionsPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="transparent")
         self.grid_columnconfigure(0, weight=1)
         
-        title = ctk.CTkLabel(self, text="Choose Components", font=("Consolas", 18, "bold"), text_color="#00FFFF")
+        title = ctk.CTkLabel(self, text="Choose Components", font=("Consolas", 18, "bold"), text_color=("#171925", "#d83b3c"))
         title.grid(row=0, column=0, pady=(30, 10))
 
         sub = ctk.CTkLabel(self, text="Check the features you want to install natively.", font=("Consolas", 12))
@@ -258,14 +258,14 @@ class ProgressPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="transparent")
         self.grid_columnconfigure(0, weight=1)
 
-        self.header_lbl = ctk.CTkLabel(self, text="Installing...", font=("Consolas", 18, "bold"), text_color="#00FFFF")
+        self.header_lbl = ctk.CTkLabel(self, text="Installing...", font=("Consolas", 18, "bold"), text_color=("#171925", "#d83b3c"))
         self.header_lbl.grid(row=0, column=0, pady=(60, 20))
 
         self.progress = ctk.CTkProgressBar(self, width=400)
         self.progress.grid(row=1, column=0, pady=10)
         self.progress.set(0)
 
-        self.log_lbl = ctk.CTkLabel(self, text="Initializing...", font=("Consolas", 12), text_color="#AAAAAA")
+        self.log_lbl = ctk.CTkLabel(self, text="Initializing...", font=("Consolas", 12), text_color=("#555555", "#8a8d9e"))
         self.log_lbl.grid(row=2, column=0, pady=20)
         
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")

@@ -33,14 +33,14 @@ def record_attempt(success: bool) -> dict:
     elif _FAILED_ATTEMPTS == 2:
         database.insert_log("FAILED_AUTH_2", b"Second Invalid Attempt")
         # Trigger an email alert immediately
-        email_service.send_alert_email("Two consecutive failed master password attempts on CSM.")
+        email_service.send_alert_email("Two consecutive failed master password attempts on CSM.", severity=2)
         return {"action": "DENY", "retry": True, "message": "Second Invalid Attempt. Security alert sent."}
         
     elif _FAILED_ATTEMPTS >= 3:
         database.insert_log("FAILED_AUTH_3_LOCKOUT", b"Lockout Protocol Initiated")
         _LOCKOUT_TIMESTAMP = time.time()
         # Escalate into a full email lockout notification
-        email_service.send_alert_email("Critical: Clipboard locked entirely due to 3 consecutive failed authorization requests.")
+        email_service.send_alert_email("Critical: Clipboard locked entirely due to 3 consecutive failed authorization requests.", severity=3)
         return {"action": "LOCKOUT", "retry": False, "message": f"Clipboard locked for {config.LOCKOUT_DURATION_SECONDS} seconds."}
 
 def is_locked() -> bool:

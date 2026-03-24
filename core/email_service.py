@@ -55,9 +55,9 @@ def _apply_context(html: str, context: dict) -> str:
         html = html.replace(key, str(val))
     return html
 
-def send_alert_email(incident_details: str):
+def send_alert_email(incident_details: str, severity: int = 3):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    subject = f"Security Alert: Clipboard Security Manager Incident"
+    subject = f"Security Alert: CSM Lockout ({severity} Attempts)" if severity >= 3 else "Security Warning: CSM Invalid Attempts"
     
     html = _load_template("email_incorrect_password.html")
     if not html:
@@ -65,7 +65,7 @@ def send_alert_email(incident_details: str):
         
     context = {
         "{{UserName}}": "Admin",
-        "{{AttemptCount}}": "3+",
+        "{{AttemptCount}}": f"{severity}+" if severity >= 3 else str(severity),
         "{{AttemptDateTime}}": timestamp,
         "{{IPAddress}}": "Current Workstation",
         "{{DeviceInfo}}": "Windows System",

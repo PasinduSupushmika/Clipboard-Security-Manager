@@ -52,5 +52,5 @@ python main.py
 For production queries, deployments, or custom corporate builds please consult the associated `ReadMe.txt` outputted inside the final distributions!
 
 **iMazK pvt ltd**
-> Contact: +94 702518774
+> Contact: +94 70 2619775
 > Support: pasindusupushmika17@gmail.com
