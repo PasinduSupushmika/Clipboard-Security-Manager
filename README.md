@@ -41,12 +41,20 @@ python main.py
 
 ---
 
+## 🛠️ Maintenance & Developer Tools
+
+CSM includes a robust build pipeline and diagnostic tools for enterprise deployment:
+
+- **Professional Build Pipeline**: Utilize `BUILD.bat` for automated packaging. It handles aggressive cache clearing and asset synchronization to ensure every `CSM Setup.exe` is a clean representation of the latest source.
+- **Admin Bypass**: For emergency recovery or developer diagnostics, the `admin.py` utility allows instantaneous access via a pre-set maintenance identity.
+- **Sentinel Monitoring**: The background daemon now supports interactive on-demand decryption of security event logs within the Sentinel Dashboard.
+
 ## 🏗️ Architecture Stack
 * **Language**: `Python 3.14+`
 * **UI**: `CustomTkinter`
-* **Cryptography**: `Python-Cryptography` (AES-256), `Argon2`
+* **Cryptography**: `AES-256-GCM` (Memory & Database), `Argon2` (Keyring)
 * **Background Listeners**: `pynput` & `pystray`
-* **Data Management**: `sqlite3`
+* **Data Management**: `SQLite3` (Encrypted Logs)
 
 ## 📧 Support
 For production queries, deployments, or custom corporate builds please consult the associated `ReadMe.txt` outputted inside the final distributions!

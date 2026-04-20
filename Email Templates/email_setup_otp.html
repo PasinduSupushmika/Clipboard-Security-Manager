@@ -4,85 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Verify Your Email Address</title>
+  <style type="text/css">
+    * { margin: 0; padding: 0; }
+    body { margin: 0; padding: 0; background-color: #0a0e27; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    table { border-collapse: collapse; border-spacing: 0; }
+    img { max-width: 100%; height: auto; display: block; border: 0; outline: none; text-decoration: none; }
+    a { color: #d83b3c; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    
+    /* Mobile responsive */
+    @media only screen and (max-width: 600px) {
+      .mobile-padding { padding: 24px 16px !important; }
+      .mobile-padding-sm { padding: 16px 12px !important; }
+      .mobile-text-center { text-align: center !important; }
+      .mobile-full-width { width: 100% !important; display: block !important; }
+      .mobile-block { display: block !important; }
+      .mobile-margin { margin-bottom: 16px !important; }
+      .header-title { font-size: 24px !important; letter-spacing: 0 !important; }
+      .otp-code { font-size: 42px !important; letter-spacing: 8px !important; }
+      .body-text { font-size: 14px !important; }
+      .icon-box { width: 44px !important; height: 44px !important; font-size: 20px !important; padding: 0 !important; margin-left: auto !important; }
+      .step-number { width: 20px !important; height: 20px !important; font-size: 11px !important; }
+      .step-table { display: block !important; width: 100% !important; }
+      .step-row { display: block !important; margin-bottom: 12px !important; }
+      .step-col { display: block !important; padding: 8px 0 !important; }
+      .footer-text { font-size: 11px !important; }
+    }
+    
+    @media only screen and (max-width: 480px) {
+      .mobile-padding { padding: 16px 12px !important; }
+      .header-title { font-size: 20px !important; }
+      .body-text { font-size: 13px !important; }
+      .otp-code { font-size: 36px !important; letter-spacing: 6px !important; }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;background-color:#000000;font-family:'Georgia',serif;">
+<body>
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#000000;padding:48px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#0a0e27;padding:48px 16px;">
     <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+      <td align="center" style="padding: 0;">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:100%;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 10px 40px rgba(216,59,60,0.15);margin:0 auto;" role="presentation">
 
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#000000 0%,#d83b3c 100%);border-radius:8px 8px 0 0;padding:44px 48px 36px;">
-              <p style="margin:0 0 6px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d83b3c;font-family:'Georgia',serif;">Setup Verification</p>
-              <p style="margin:0 0 20px;font-size:28px;font-weight:bold;color:#171925;font-family:'Georgia',serif;">{{CompanyName}}</p>
-              <p style="margin:0;font-size:18px;color:#bfdbfe;font-style:italic;">Confirm your email address to continue setup.</p>
+            <td style="background:linear-gradient(135deg,#1a1f3a 0%,#2d1b1f 100%);border-bottom:3px solid #d83b3c;padding:40px 48px 32px;" class="mobile-padding">
+              <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%;" role="presentation">
+                <tr>
+                  <td style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+                    <p style="margin:0 0 6px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#d83b3c;font-weight:600;font-family:'Segoe UI',sans-serif;">✓ Setup Verification</p>
+                    <p style="margin:0;font-size:32px;font-weight:700;color:#ffffff;font-family:'Segoe UI',sans-serif;letter-spacing:-0.5px;" class="header-title">{{CompanyName}}</p>
+                  </td>
+                  <td align="right" style="vertical-align: middle; padding-left: 20px; width: 56px; flex-shrink: 0;" class="icon-box">
+                    <div style="width:56px;height:56px;background:#d83b3c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-left:auto;">
+                      ✉️
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- OTP Card -->
+          <!-- Body -->
           <tr>
-            <td style="background:#171925;padding:48px 48px 36px;">
-              <p style="margin:0 0 20px;font-size:16px;color:#ffffff;line-height:1.7;">Dear <strong>{{UserName}}</strong>,</p>
-              <p style="margin:0 0 28px;font-size:15px;color:#c8cad6;line-height:1.8;">
+            <td style="background:#0f1428;padding:48px;" class="mobile-padding">
+              <p style="margin:0 0 8px;font-size:15px;color:#b4b9c8;line-height:1.6;font-weight:500;" class="body-text">Dear <span style="color:#ffffff;font-weight:600;">{{UserName}}</span>,</p>
+              
+              <p style="margin:0 0 32px;font-size:15px;color:#a8adb8;line-height:1.8;word-wrap:break-word;" class="body-text">
                 To complete your account setup, please verify your email address using the One-Time Password below. This helps us ensure the correct email has been associated with your account.
               </p>
 
               <!-- OTP Display -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;" role="presentation">
                 <tr>
-                  <td align="center" style="background:#171925;border:2px dashed #d83b3c;border-radius:8px;padding:32px 24px;">
-                    <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8cad6;">Your Verification Code</p>
-                    <p style="margin:0;font-size:48px;font-weight:bold;color:#000000;letter-spacing:16px;font-family:'Courier New',monospace;">{{OTPCode}}</p>
-                    <p style="margin:8px 0 0;font-size:13px;color:#9ca3af;">Valid for <strong style="color:#d83b3c;">{{OTPExpiry}} minutes</strong></p>
+                  <td align="center" style="background:#1a1f3a;border:2px dashed #d83b3c;border-radius:8px;padding:40px 24px;box-shadow:0 4px 16px rgba(216,59,60,0.1);" class="mobile-padding-sm">
+                    <p style="margin:0 0 12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d83b3c;font-weight:700;font-family:'Segoe UI',sans-serif;">Your Verification Code</p>
+                    <p style="margin:0 0 16px;font-size:56px;font-weight:700;color:#ffffff;letter-spacing:14px;font-family:'Courier New','Courier',monospace;word-break:break-all;word-spacing:100vw;" class="otp-code">{{OTPCode}}</p>
+                    <p style="margin:0;font-size:13px;color:#8a8f9e;font-weight:500;" class="body-text">Valid for <span style="color:#d83b3c;font-weight:700;">{{OTPExpiry}} minutes</span></p>
                   </td>
                 </tr>
               </table>
 
               <!-- Steps -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;background:#171925;border-radius:6px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;background:#1a1f3a;border:1px solid #d83b3c33;border-radius:8px;overflow:hidden;" role="presentation">
                 <tr>
-                  <td style="padding:24px 28px;">
-                    <p style="margin:0 0 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;">How to use this code</p>
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                      <tr>
-                        <td style="padding:6px 0;vertical-align:top;width:28px;">
-                          <span style="display:inline-block;width:20px;height:20px;background:#d83b3c;border-radius:50%;text-align:center;line-height:20px;font-size:11px;color:#fff;font-weight:bold;">1</span>
+                  <td style="padding:28px 32px;" class="mobile-padding-sm">
+                    <p style="margin:0 0 16px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#d83b3c;font-weight:700;font-family:'Segoe UI',sans-serif;">How to use this code</p>
+                    <table cellpadding="0" cellspacing="0" width="100%" style="width: 100%;" role="presentation" class="step-table">
+                      <tr style="border-bottom:1px solid #2d3451;" class="step-row">
+                        <td style="padding:12px 0;vertical-align:top;width:36px;padding-right:12px;flex-shrink:0;" class="step-col">
+                          <span style="display:inline-flex;width:24px;height:24px;background:#d83b3c;border-radius:50%;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700;flex-shrink:0;" class="step-number">1</span>
                         </td>
-                        <td style="padding:6px 0;font-size:13px;color:#c8cad6;padding-left:10px;">Return to the setup screen in <strong>{{CompanyName}}</strong>.</td>
+                        <td style="padding:12px 0;font-size:13px;color:#b4b9c8;font-weight:500;word-wrap:break-word;" class="step-col">Return to the setup screen in <span style="color:#ffffff;font-weight:600;">{{CompanyName}}</span>.</td>
                       </tr>
-                      <tr>
-                        <td style="padding:6px 0;vertical-align:top;">
-                          <span style="display:inline-block;width:20px;height:20px;background:#d83b3c;border-radius:50%;text-align:center;line-height:20px;font-size:11px;color:#fff;font-weight:bold;">2</span>
+                      <tr style="border-bottom:1px solid #2d3451;" class="step-row">
+                        <td style="padding:12px 0;vertical-align:top;width:36px;padding-right:12px;flex-shrink:0;" class="step-col">
+                          <span style="display:inline-flex;width:24px;height:24px;background:#d83b3c;border-radius:50%;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700;flex-shrink:0;" class="step-number">2</span>
                         </td>
-                        <td style="padding:6px 0;font-size:13px;color:#c8cad6;padding-left:10px;">Enter the 6-digit code in the verification field.</td>
+                        <td style="padding:12px 0;font-size:13px;color:#b4b9c8;font-weight:500;word-wrap:break-word;" class="step-col">Enter the 6-digit code in the verification field.</td>
                       </tr>
-                      <tr>
-                        <td style="padding:6px 0;vertical-align:top;">
-                          <span style="display:inline-block;width:20px;height:20px;background:#d83b3c;border-radius:50%;text-align:center;line-height:20px;font-size:11px;color:#fff;font-weight:bold;">3</span>
+                      <tr class="step-row">
+                        <td style="padding:12px 0;vertical-align:top;width:36px;padding-right:12px;flex-shrink:0;" class="step-col">
+                          <span style="display:inline-flex;width:24px;height:24px;background:#d83b3c;border-radius:50%;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700;flex-shrink:0;" class="step-number">3</span>
                         </td>
-                        <td style="padding:6px 0;font-size:13px;color:#c8cad6;padding-left:10px;">Your email will be confirmed and setup will proceed.</td>
+                        <td style="padding:12px 0;font-size:13px;color:#b4b9c8;font-weight:500;word-wrap:break-word;" class="step-col">Your email will be confirmed and setup will proceed.</td>
                       </tr>
                     </table>
                   </td>
                 </tr>
               </table>
 
-              <p style="margin:0 0 10px;font-size:13px;color:#9ca3af;line-height:1.7;">
+              <p style="margin:0 0 12px;font-size:13px;color:#7a7f8e;line-height:1.8;word-wrap:break-word;" class="body-text">
                 Did not request this? You can safely disregard this email. No changes have been made to your account.
               </p>
-              <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.7;">
-                Need help? Contact us at <a href="mailto:{{SupportEmail}}" style="color:#d83b3c;text-decoration:none;">{{SupportEmail}}</a>.
+              <p style="margin:0;font-size:13px;color:#7a7f8e;line-height:1.8;word-wrap:break-word;" class="body-text">
+                Need help? Contact us at <a href="mailto:{{SupportEmail}}" style="color:#d83b3c;text-decoration:none;font-weight:600;word-break:break-all;">{{SupportEmail}}</a>.
               </p>
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background:#171925;border-top:1px solid #d83b3c;border-radius:0 0 8px 8px;padding:24px 48px;">
-              <p style="margin:0 0 6px;font-size:12px;color:#9ca3af;">This is an automated message sent as part of the {{CompanyName}} setup process. Please do not reply.</p>
-              <p style="margin:0;font-size:12px;color:#9ca3af;">&copy; {{Year}} {{CompanyName}}. All rights reserved. &nbsp;|&nbsp; <a href="{{PrivacyPolicyURL}}" style="color:#c8cad6;text-decoration:none;">Privacy Policy</a></p>
+            <td style="background:#1a1f3a;border-top:1px solid #2d3451;padding:28px 48px;" class="mobile-padding">
+              <p style="margin:0 0 8px;font-size:12px;color:#8a8f9e;line-height:1.6;font-weight:500;word-wrap:break-word;" class="footer-text">This is an automated message sent as part of the {{CompanyName}} setup process. Please do not reply.</p>
+              <p style="margin:0;font-size:12px;color:#8a8f9e;font-weight:500;word-wrap:break-word;" class="footer-text">&copy; {{Year}} {{CompanyName}}. All rights reserved. &nbsp;|&nbsp; <a href="{{PrivacyPolicyURL}}" style="color:#d83b3c;text-decoration:none;font-weight:600;word-break:break-all;">Privacy Policy</a></p>
             </td>
           </tr>
 

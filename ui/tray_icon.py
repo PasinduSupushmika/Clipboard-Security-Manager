@@ -14,7 +14,7 @@ class TrayApp:
     def create_icon_image(self, active=True):
         """Loads physical asset natively bypassing algorithm fallback!"""
         try:
-            img = Image.open(resource_path("icon.png"))
+            img = Image.open(resource_path("icon.ico"))
             # Optional: Apply visual grayscale math to visually signal the application is offline
             if not active:
                 img = img.convert('L')

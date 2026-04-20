@@ -1,169 +1,233 @@
 import customtkinter as ctk
+from PIL import Image
+from tkinter import messagebox
+import re
 from core import auth
 from core.config import resource_path
 
 class SetupWizard(ctk.CTk):
     def __init__(self):
         super().__init__()
+        
+        # 🎨 DUAL-THEME COLOR PALETTE
+        self.NEON_RED = ("#CC0000", "#FF3333")
+        self.BORDER_RED = ("#AAAAAA", "#CC0000")
+        self.DARK_BG = ("#F5F5F5", "#050505")
+        self.ENTRY_BG = ("#FFFFFF", "#0D0505")
+        self.HOVER_RED = ("#FFEEEE", "#5A0000")
+        self.TEXT_GRAY = ("#444444", "#AAAAAA")
+        self.PANEL_BG = ("#FFFFFF", "#0A0000")
 
         self.title("CSM Initialization Sequence")
-        self.geometry("480x520")
+        self.geometry("900x600")
         self.resizable(False, False)
         
         try:
             self.iconbitmap(resource_path("icon.ico"))
-        except:
+        except Exception:
             pass
 
-        # Apply Modern Dark Glow UI Pattern Native Frame Config
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        # =========================
+        # BACKGROUND IMAGE
+        # =========================
+        try:
+            bg_path = resource_path("ui/background1.png")
+            self.bg_image = ctk.CTkImage(
+                light_image=Image.open(bg_path),
+                dark_image=Image.open(bg_path),
+                size=(900, 600)
+            )
+            self.bg_label = ctk.CTkLabel(self, image=self.bg_image, text="")
+            self.bg_label.place(relwidth=1, relheight=1)
+            self.bg_label.lower()
+        except Exception:
+            self.configure(fg_color=self.DARK_BG)
         
-        self.main_container = ctk.CTkFrame(self, fg_color="transparent")
-        self.main_container.pack(fill="both", expand=True)
-        
-        self.setup_frame = ctk.CTkFrame(self.main_container, fg_color="transparent")
-        self.setup_frame.grid(row=0, column=0, sticky="nsew")
-        self.setup_frame.grid_columnconfigure(0, weight=1)
-        
-        self.otp_frame = ctk.CTkFrame(self.main_container, fg_color="transparent")
-        self.otp_frame.grid(row=0, column=0, sticky="nsew")
-        self.otp_frame.grid_columnconfigure(0, weight=1)
+        # Enable solid background for light mode to override tech imagery if needed
+        if ctk.get_appearance_mode() == "Light":
+            self.configure(fg_color=self.DARK_BG)
+            try: self.bg_label.destroy()
+            except: pass
 
-        self._build_setup_frame()
-        self._build_otp_frame()
-        
-        
-        btn_theme = ctk.CTkButton(self.main_container, text="Theme", width=60, command=self._toggle_theme, fg_color="transparent", border_width=1, border_color=("#171925", "#d83b3c"))
-        btn_theme.place(relx=0.05, rely=0.05)
-        self.setup_frame.tkraise()
+        # Container for pages to allow stacking
+        self.container = ctk.CTkFrame(self, fg_color="transparent")
+        self.container.place(relx=0.5, rely=0.5, anchor="center", relwidth=1, relheight=1)
 
-    def _build_setup_frame(self):
-        # Cyberpunkish Labeling Scheme
-        header = ctk.CTkLabel(
-            self.setup_frame, text="MASTER PASSWORD SETUP",
-            font=("Consolas", 22, "bold"), text_color=("#171925", "#d83b3c")
+        self._setup_frame = ctk.CTkFrame(self.container, fg_color="transparent")
+        self._setup_frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=1, relheight=1)
+
+        self._otp_frame = ctk.CTkFrame(self.container, fg_color="transparent")
+        self._otp_frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=1, relheight=1)
+
+        self._build_setup_screen()
+        self._build_otp_screen()
+        self._setup_frame.tkraise()
+
+    # ─── Screen 1: Email + Password ──────────────────────────────────────
+    def _build_setup_screen(self):
+        f = self._setup_frame
+
+        # TITLE
+        glow = ctk.CTkLabel(f, text="MASTER ACCOUNT INITIALIZATION",
+                            font=("Arial", 28, "bold"), text_color=self.BORDER_RED)
+        glow.place(relx=0.502, rely=0.152, anchor="center")
+
+        title = ctk.CTkLabel(f, text="MASTER ACCOUNT INITIALIZATION",
+                             font=("Orbitron", 28, "bold"), text_color=self.NEON_RED)
+        title.place(relx=0.5, rely=0.15, anchor="center")
+
+        desc = ctk.CTkLabel(f, text="Secure your workstation by creating a unified master vault.\nAn OTP will be dispatched to verify your identity.",
+                             font=("Consolas", 14), text_color=self.TEXT_GRAY, justify="center")
+        desc.place(relx=0.5, rely=0.25, anchor="center")
+
+        # --- EMAIL FIELD ---
+        email_wrap = ctk.CTkFrame(f, width=500, height=45, corner_radius=15,
+                                  border_width=2, border_color=self.BORDER_RED, fg_color=self.ENTRY_BG)
+        email_wrap.place(relx=0.5, rely=0.38, anchor="center")
+        email_wrap.pack_propagate(False)
+
+        try:
+            mail_img = ctk.CTkImage(light_image=Image.open(resource_path("ui/mail.png")),
+                                    dark_image=Image.open(resource_path("ui/mail.png")), size=(20, 20))
+            mail_icon = ctk.CTkLabel(email_wrap, image=mail_img, text="")
+            mail_icon.pack(side="left", padx=(15, 10))
+        except: pass
+
+        self.email_entry = ctk.CTkEntry(email_wrap, placeholder_text="Recovery Email address...",
+                                        border_width=0, fg_color="transparent",
+                                        text_color=("#1A1A1A", "#FFFFFF"), font=("Consolas", 14))
+        self.email_entry.pack(side="left", fill="both", expand=True, padx=(0, 15))
+
+        # --- PASSWORD FIELD ---
+        pw_wrap = ctk.CTkFrame(f, width=500, height=45, corner_radius=15,
+                               border_width=2, border_color=self.BORDER_RED, fg_color=self.ENTRY_BG)
+        pw_wrap.place(relx=0.5, rely=0.48, anchor="center")
+        pw_wrap.pack_propagate(False)
+
+        try:
+            lock_img = ctk.CTkImage(light_image=Image.open(resource_path("ui/padlock1.png")),
+                                    dark_image=Image.open(resource_path("ui/padlock1.png")), size=(20, 20))
+            lock_icon = ctk.CTkLabel(pw_wrap, image=lock_img, text="")
+            lock_icon.pack(side="left", padx=(15, 10))
+        except: pass
+
+        self.password_entry = ctk.CTkEntry(pw_wrap, placeholder_text="New Master Password...",
+                                           show="*", border_width=0, fg_color="transparent",
+                                           text_color=("#1A1A1A", "#FFFFFF"), font=("Consolas", 14))
+        self.password_entry.pack(side="left", fill="both", expand=True, padx=(0, 15))
+
+        # --- CONFIRM FIELD ---
+        confirm_wrap = ctk.CTkFrame(f, width=500, height=45, corner_radius=15,
+                                    border_width=2, border_color=self.BORDER_RED, fg_color=self.ENTRY_BG)
+        confirm_wrap.place(relx=0.5, rely=0.58, anchor="center")
+        confirm_wrap.pack_propagate(False)
+
+        try:
+            lock2_img = ctk.CTkImage(light_image=Image.open(resource_path("ui/padlock2.png")),
+                                     dark_image=Image.open(resource_path("ui/padlock2.png")), size=(20, 20))
+            lock2_icon = ctk.CTkLabel(confirm_wrap, image=lock2_img, text="")
+            lock2_icon.pack(side="left", padx=(15, 10))
+        except: pass
+
+        self.confirm_entry = ctk.CTkEntry(confirm_wrap, placeholder_text="Confirm Master Password...",
+                                          show="*", border_width=0, fg_color="transparent",
+                                          text_color=("#1A1A1A", "#FFFFFF"), font=("Consolas", 14))
+        self.confirm_entry.pack(side="left", fill="both", expand=True, padx=(0, 15))
+
+
+        self.requirement = ctk.CTkLabel(f,
+                                   text="Requires: 8+ chars, Uppercase, Lowercase, Number, Symbol",
+                                   font=("Consolas", 12), text_color=self.TEXT_GRAY)
+        self.requirement.place(relx=0.5, rely=0.65, anchor="center")
+
+        # SUBMIT BUTTON
+        self.init_button = ctk.CTkButton(
+            f, text="INITIALIZE PROTOCOL", width=420, height=60, corner_radius=30,
+            fg_color=self.HOVER_RED, border_width=2, border_color=self.NEON_RED,
+            hover_color=self.PANEL_BG, text_color=self.NEON_RED,
+            font=("Orbitron", 18, "bold"), command=self._submit_setup
         )
-        header.grid(row=0, column=0, pady=(30, 5))
+        self.init_button.place(relx=0.5, rely=0.78, anchor="center")
 
-        info = ctk.CTkLabel(
-            self.setup_frame, text="Choose a strong password to encrypt clipboard buffers.\nYou must provide a valid Email for recovery OTPs.",
-            font=("Consolas", 12), text_color=("#555555", "#8a8d9e")
-        )
-        info.grid(row=1, column=0, pady=(0, 20))
+    def _submit_setup(self):
+        email = self.email_entry.get().strip()
+        pw1   = self.password_entry.get()
+        pw2   = self.confirm_entry.get()
 
-        # Email Capture
-        self.email_entry = ctk.CTkEntry(
-            self.setup_frame, placeholder_text="Recovery Email (@gmail.com)...",
-            width=300, border_color=("#171925", "#d83b3c"), fg_color="transparent"
-        )
-        self.email_entry.grid(row=2, column=0, pady=(10, 20))
-
-        # Setup PW Data
-        self.pw_entry = ctk.CTkEntry(
-            self.setup_frame, placeholder_text="New Master Password...",
-            show="*", width=300, border_color=("#171925", "#d83b3c"), fg_color="transparent"
-        )
-        self.pw_entry.grid(row=3, column=0, pady=5)
-
-        self.pw_confirm = ctk.CTkEntry(
-            self.setup_frame, placeholder_text="Confirm Master Password...",
-            show="*", width=300, border_color=("#171925", "#d83b3c"), fg_color="transparent"
-        )
-        self.pw_confirm.grid(row=4, column=0, pady=5)
-        
-        pw_rules = ctk.CTkLabel(self.setup_frame, text="Requires: 8+ chars, Uppercase, Lowercase, Number, Symbol.", text_color=("#777777", "#8a8d9e"), font=("Consolas", 10))
-        pw_rules.grid(row=5, column=0, pady=(0, 10))
-
-        self.error_lbl = ctk.CTkLabel(self.setup_frame, text="", text_color=("#d83b3c", "#d83b3c"), font=("Consolas", 12))
-        self.error_lbl.grid(row=6, column=0, pady=(5, 0))
-
-        self.btn_submit = ctk.CTkButton(
-            self.setup_frame, text="INITIALIZE PROTOCOL", width=200, fg_color="transparent", 
-            border_width=2, hover_color=("#D0E4FF", "#171925"), text_color=("#171925", "#d83b3c"),
-            command=self._attempt_initialization
-        )
-        self.btn_submit.grid(row=7, column=0, pady=20)
-
-    def _build_otp_frame(self):
-        header = ctk.CTkLabel(
-            self.otp_frame, text="VERIFY EMAIL ADDRESS",
-            font=("Consolas", 22, "bold"), text_color=("#171925", "#d83b3c")
-        )
-        header.grid(row=0, column=0, pady=(60, 10))
-
-        info = ctk.CTkLabel(
-            self.otp_frame, text="A test OTP has been dispatched to your email.\nPlease enter it below to confirm you can receive alerts.",
-            font=("Consolas", 12), text_color=("#555555", "#8a8d9e")
-        )
-        info.grid(row=1, column=0, pady=(0, 30))
-
-        self.otp_entry = ctk.CTkEntry(
-            self.otp_frame, placeholder_text="Enter 6-Digit Code...",
-            width=200, border_color=("#171925", "#d83b3c"), fg_color="transparent", justify="center"
-        )
-        self.otp_entry.grid(row=2, column=0, pady=10)
-
-        self.otp_error_lbl = ctk.CTkLabel(self.otp_frame, text="", text_color=("#a07830", "#d83b3c"), font=("Consolas", 12))
-        self.otp_error_lbl.grid(row=3, column=0, pady=(5, 0))
-
-        self.btn_verify = ctk.CTkButton(
-            self.otp_frame, text="VERIFY & COMPLETE SETUP", width=200, fg_color="transparent", 
-            border_width=2, hover_color=("#D0E4FF", "#171925"), text_color=("#171925", "#d83b3c"),
-            command=self._verify_otp_completion
-        )
-        self.btn_verify.grid(row=4, column=0, pady=30)
-        
-        btn_back = ctk.CTkButton(self.otp_frame, text="< Back", width=100, fg_color="transparent", border_width=1, command=lambda: self.setup_frame.tkraise())
-        btn_back.grid(row=5, column=0)
-
-    def _toggle_theme(self):
-        current = ctk.get_appearance_mode()
-        ctk.set_appearance_mode("Light" if current == "Dark" else "Dark")
-
-    def _attempt_initialization(self):
-        e = self.email_entry.get()
-        p1 = self.pw_entry.get()
-        p2 = self.pw_confirm.get()
-        
-        if not auth.validate_email_format(e):
-            self.error_lbl.configure(text="Email must be a valid @gmail.com address.")
+        if not email or not pw1 or not pw2:
+            messagebox.showerror("Error", "All fields are required!")
+            return
+        if not auth.validate_email_format(email):
+            messagebox.showerror("Error", "Enter a valid email address!")
+            return
+        if not auth.validate_password_complexity(pw1):
+            messagebox.showerror("Weak Password", "Requires 8+ chars, Uppercase, Lowercase, Number, Symbol.")
+            return
+        if pw1 != pw2:
+            messagebox.showerror("Error", "Passwords do not match!")
             return
 
-        if not auth.validate_password_complexity(p1):
-            self.error_lbl.configure(text="Password fails complexity requirements.")
-            return
-            
-        if p1 != p2:
-            self.error_lbl.configure(text="Passwords do not match!")
-            return
-            
-        self.error_lbl.configure(text="Dispatching Test Email...", text_color=("#a07830", "#d83b3c"))
+        self.init_button.configure(text="DISPATCHING OTP...", state="disabled")
         self.update()
-        
-        if auth.generate_and_send_recovery_otp(target_email=e):
-            self.error_lbl.configure(text="", text_color=("#d83b3c", "#d83b3c"))
-            self.otp_error_lbl.configure(text="Sent!", text_color=("#171925", "#FFFFFF"))
-            self.otp_frame.tkraise()
-        else:
-            self.error_lbl.configure(text="Failed to send Verification Email. Check connection or Dummy data.")
-            self.update()
 
-    def _verify_otp_completion(self):
-        otp = self.otp_entry.get()
-        # We temporarily hijack the reset_password_with_otp logic by parsing the temporary password securely
-        p1 = self.pw_entry.get()
-        
-        if auth.reset_password_with_otp(otp, p1):
-            # Save the email permanently since they validated it works
-            auth.save_user_email(self.email_entry.get())
-            self.destroy() # Close the UI, setup complete!
+        if auth.generate_and_send_recovery_otp(target_email=email):
+            self._otp_hint.configure(text=f"A 6-digit code was sent to  {email}")
+            self._otp_frame.tkraise()
         else:
-            self.otp_error_lbl.configure(text="Invalid OTP Code.", text_color=("#d83b3c", "#d83b3c"))
+            messagebox.showerror("Error", "Failed to send email. Check connection.")
+            self.init_button.configure(text="INITIALIZE PROTOCOL", state="normal")
+
+    # ─── Screen 2: OTP ───────────────────────────────────────────────────
+    def _build_otp_screen(self):
+        f = self._otp_frame
+
+        glow = ctk.CTkLabel(f, text="VERIFY YOUR IDENTITY",
+                            font=("Arial", 28, "bold"), text_color=self.BORDER_RED)
+        glow.place(relx=0.502, rely=0.202, anchor="center")
+
+        title = ctk.CTkLabel(f, text="VERIFY YOUR IDENTITY",
+                             font=("Orbitron", 28, "bold"), text_color=self.NEON_RED)
+        title.place(relx=0.5, rely=0.2, anchor="center")
+
+        self._otp_hint = ctk.CTkLabel(f, text="A 6-digit code was sent to your email.",
+                                     font=("Consolas", 14), text_color=self.TEXT_GRAY)
+        self._otp_hint.place(relx=0.5, rely=0.32, anchor="center")
+
+        self._otp_entry = ctk.CTkEntry(f, placeholder_text="Enter 6-Digit Code...",
+                                     width=300, height=50, corner_radius=15,
+                                     border_width=2, border_color=self.BORDER_RED,
+                                     fg_color=self.ENTRY_BG, text_color=("#000000", "#FFFFFF"),
+                                     justify="center", font=("Consolas", 20, "bold"))
+        self._otp_entry.place(relx=0.5, rely=0.45, anchor="center")
+
+        self.verify_button = ctk.CTkButton(
+            f, text="VERIFY & COMPLETE SETUP", width=420, height=60, corner_radius=30,
+            fg_color=self.HOVER_RED, border_width=2, border_color=self.NEON_RED,
+            hover_color=self.PANEL_BG, text_color=self.NEON_RED,
+            font=("Orbitron", 18, "bold"), command=self._submit_otp
+        )
+        self.verify_button.place(relx=0.5, rely=0.6, anchor="center")
+
+        ctk.CTkButton(
+            f, text="< Back", width=120, height=35, corner_radius=10,
+            fg_color="transparent", border_width=1, border_color=self.BORDER_RED,
+            text_color=self.NEON_RED, command=lambda: self._setup_frame.tkraise()
+        ).place(relx=0.5, rely=0.72, anchor="center")
+
+    def _submit_otp(self):
+        otp = self._otp_entry.get().strip()
+        pw  = self.password_entry.get()
+        email = self.email_entry.get().strip()
+
+        if auth.reset_password_with_otp(otp, pw):
+            auth.save_user_email(email)
+            messagebox.showinfo("Success", "System Initialized Successfully 🔐")
+            self.destroy()
+        else:
+            messagebox.showerror("Error", "Invalid or expired OTP code.")
 
 def run_wizard():
-    """Boots the wizard synchronously. Usually invoked by main.py if unconfigured."""
+    """Launch the setup wizard."""
+    ctk.set_appearance_mode("dark")
     app = SetupWizard()
     app.mainloop()
-
-

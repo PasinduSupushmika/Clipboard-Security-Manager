@@ -19,13 +19,18 @@ def start_application():
         sys.exit(0)
     
     # 0. Check if we need to run the Enterprise Installer instead
-    # This detects if PyInstaller compiled us, AND if we are not running from the installed directory
+    # This detects if we are "Off-site" by looking for the .installed marker 
+    # in our current execution directory.
     is_frozen = getattr(sys, 'frozen', False)
-    if is_frozen and "iMazK_CSM" not in str(sys.executable):
-        print("[SETUP] First execution detected off-site. Launching Setup Payload.")
-        from ui import installer_wizard
-        installer_wizard.trigger_installer(sys.executable)
-        sys.exit(0)
+    if is_frozen:
+        exe_dir = Path(sys.executable).parent
+        marker_file = exe_dir / ".installed"
+        
+        if not marker_file.exists():
+            print("[SETUP] Installation marker missing. Launching Setup Payload.")
+            from ui import installer_wizard
+            installer_wizard.trigger_installer(sys.executable)
+            sys.exit(0)
     
     # 1. Database Pruning and Tables Setup
     try:

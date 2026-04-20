@@ -23,21 +23,29 @@ def record_attempt(success: bool) -> dict:
     # Increment failure and evaluate rules
     _FAILED_ATTEMPTS += 1
     
-    # Use dummy empty encrypted tuple for database logs representing basic alert flags for now
-    # In a full production scale we would encrypt precise detail logs here
+    # Use AES 256 GCM to secure precisely what occurred in the session
+    try:
+        engine = crypto.CryptoEngine(auth.get_aes_runtime_key())
+    except:
+        engine = None
     
+    def _safe_encrypt(msg: str):
+        if engine:
+            return engine.encrypt(msg.encode('utf-8'))
+        return msg.encode('utf-8') # Fallback to raw bytes if engine fails
+
     if _FAILED_ATTEMPTS == 1:
-        database.insert_log("FAILED_AUTH_1", b"First Invalid Attempt")
+        database.insert_log("FAILED_AUTH_1", _safe_encrypt("First Invalid Password Attempt"))
         return {"action": "DENY", "retry": True, "message": "Invalid Password. Please try again."}
         
     elif _FAILED_ATTEMPTS == 2:
-        database.insert_log("FAILED_AUTH_2", b"Second Invalid Attempt")
+        database.insert_log("FAILED_AUTH_2", _safe_encrypt("Second Consecutive Invalid Attempt"))
         # Trigger an email alert immediately
         email_service.send_alert_email("Two consecutive failed master password attempts on CSM.", severity=2)
         return {"action": "DENY", "retry": True, "message": "Second Invalid Attempt. Security alert sent."}
         
     elif _FAILED_ATTEMPTS >= 3:
-        database.insert_log("FAILED_AUTH_3_LOCKOUT", b"Lockout Protocol Initiated")
+        database.insert_log("FAILED_AUTH_3_LOCKOUT", _safe_encrypt(f"System Lockout Protocol for 3 consecutive failures"))
         _LOCKOUT_TIMESTAMP = time.time()
         # Escalate into a full email lockout notification
         email_service.send_alert_email("Critical: Clipboard locked entirely due to 3 consecutive failed authorization requests.", severity=3)
